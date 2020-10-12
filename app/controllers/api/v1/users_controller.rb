@@ -2,16 +2,17 @@ class Api::V1::UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy]
 
   def index
-    q      = User.ransack(params[:q])
-    search = q.result(distinct: true).order(id: :asc)
-    @users = search.page(params[:page]).per(params[:per])
+    search = User.ransack(params[:q])
+    search.sorts = 'id asc' if search.sorts.empty?
+    result = search.result(distinct: true)
+    @users = result.page(params[:page]).per(params[:per])
 
     user_serializer = ActiveModel::Serializer::CollectionSerializer.new(
       @users,
       serializer: User::IndexSerializer
     )
 
-    render json: { count: search.count, data: user_serializer }
+    render json: { count: result.count, data: user_serializer }
   end
 
   def create
