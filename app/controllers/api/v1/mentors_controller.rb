@@ -1,25 +1,25 @@
-class Api::V1::CategoriesController < ApplicationController
+class Api::V1::MentorsController < ApplicationController
   before_action :authenticate_api_user!, except: %i[index show]
-  before_action :set_category, only: %i[show update destroy]
+  before_action :set_mentor, only: %i[show update destroy]
 
   def index
-    search = Category.ransack(params[:q])
+    search = Mentor.ransack(params[:q])
     search.sorts = 'id asc' if search.sorts.empty?
     result = search.result(distinct: true)
-    category = result.page(params[:page]).per(params[:per])
+    mentor = result.page(params[:page]).per(params[:per])
 
-    category_serializer = ActiveModel::Serializer::CollectionSerializer.new(
-      category,
-      serializer: CategorySerializer
+    mentor_serializer = ActiveModel::Serializer::CollectionSerializer.new(
+      mentor,
+      serializer: MentorSerializer
     )
 
-    render json: { count: result.count, data: category_serializer }
+    render json: { count: result.count, data: mentor_serializer }
   end
 
   def create
-    category = Category.new(category_params)
+    mentor = Mentor.new(mentor_params)
 
-    if category.save
+    if mentor.save
       render json: {
         success: true,
         messages: 'Berhasil menambahkan data'
@@ -28,17 +28,17 @@ class Api::V1::CategoriesController < ApplicationController
       render json: {
         success: false,
         messages: 'Gagal menambahkan data',
-        error: category.errors.full_messages
+        error: mentor.errors.full_messages
       }
     end
   end
 
   def show
-    render json: @category, serializer: CategorySerializer
+    render json: @mentor, serializer: MentorSerializer
   end
 
   def update
-    if @category.update(category_params)
+    if @mentor.update(mentor_params)
       render json: {
         success: true,
         messages: 'Berhasil mengubah data'
@@ -47,13 +47,13 @@ class Api::V1::CategoriesController < ApplicationController
       render json: {
         success: false,
         messages: 'Gagal mengubah data',
-        error: @category.errors.full_messages
+        error: @mentor.errors.full_messages
       }
     end
   end
 
   def destroy
-    if @category.destroy
+    if @mentor.destroy
       render json: {
         success: true,
         messages: 'Berhasil menghapus data'
@@ -62,21 +62,21 @@ class Api::V1::CategoriesController < ApplicationController
       render json: {
         success: false,
         messages: 'Gagal menghapus data',
-        error: @category.errors.full_messages
+        error: @mentor.errors.full_messages
       }
     end
   end
 
   private
 
-  def set_category
-    @category = Category.find(params[:id])
+  def set_mentor
+    @mentor = Mentor.find(params[:id])
   end
 
-  def category_params
-    params.require(:category)
+  def mentor_params
+    params.require(:mentor)
           .permit(
-            :name, :description
+            :first_name, :last_name, :description, :expertise, :email
           )
   end
 end
