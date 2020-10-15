@@ -1,6 +1,7 @@
 class Api::V1::SchedulesController < ApplicationController
   before_action :authenticate_api_user!, except: %i[index show]
   before_action :set_schedule, only: %i[show update destroy]
+  load_and_authorize_resource
 
   def index
     search = Schedule.ransack(params[:q])
@@ -18,7 +19,7 @@ class Api::V1::SchedulesController < ApplicationController
 
   def create
     schedule = Schedule.new(schedule_params)
-
+    schedule.mentor_id = current_user.id
     if schedule.save
       render json: {
         success: true,

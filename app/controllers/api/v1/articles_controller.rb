@@ -1,6 +1,7 @@
 class Api::V1::ArticlesController < ApplicationController
   before_action :authenticate_api_user!, except: %i[index show]
   before_action :set_article, only: %i[show update destroy]
+  load_and_authorize_resource
 
   def index
     search = Article.ransack(params[:q])
@@ -18,7 +19,7 @@ class Api::V1::ArticlesController < ApplicationController
 
   def create
     article = Article.new(article_params)
-
+    article.author_id = current_user.id
     if article.save
       render json: {
         success: true,
@@ -76,7 +77,7 @@ class Api::V1::ArticlesController < ApplicationController
   def article_params
     params.require(:article)
           .permit(
-            :title, :description, :author, :image, :category_id
+            :title, :description, :image, :category_id, :author_id
           )
   end
 end

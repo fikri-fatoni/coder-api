@@ -3,12 +3,23 @@ class ScheduleSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :google_form_link, :schedule_type,
              :status, :learning_tool, :event_date, :count_down, :category, :mentor
 
+
   def category
-    object.try(:category).name
+    category = object.try(:category)
+    {
+      id: category.try(:id),
+      name: category.try(:name)
+    }
   end
 
   def mentor
-    object.try(:mentor).first_name
+    mentor = object.try(:mentor)
+    {
+      id: mentor.try(:id),
+      first_name: mentor.try(:first_name),
+      last_name: mentor.try(:last_name),
+      avatar: { url: mentor.try(:avatar).url }
+    }
   end
 
   def event_date

@@ -43,9 +43,11 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Add by Fikri
+gem 'cancancan' # Authorizations
 gem 'carrierwave', '~> 2.0' # Upload file
 gem 'devise_token_auth' # Authentication
 gem 'enumerize' # Enumerator
 gem 'kaminari' # Pagination
 gem 'mini_magick' # Thumbnail for image
 gem 'ransack' # Searching & Sorting
+gem 'rolify' # Role

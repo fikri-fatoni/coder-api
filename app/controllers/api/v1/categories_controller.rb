@@ -1,6 +1,7 @@
 class Api::V1::CategoriesController < ApplicationController
   before_action :authenticate_api_user!, except: %i[index show]
   before_action :set_category, only: %i[show update destroy]
+  load_and_authorize_resource
 
   def index
     search = Category.ransack(params[:q])
