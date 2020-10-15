@@ -1,5 +1,10 @@
 class Article < ApplicationRecord
-  belongs_to :category
+  resourcify
 
-  validates :title, :description, :author, presence: true
+  belongs_to :category
+  belongs_to :author, class_name: 'User'
+
+  mount_uploader :image, ImageUploader
+
+  validates :title, :description, presence: true
 end
