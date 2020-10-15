@@ -1,5 +1,5 @@
 class ArticleSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :author, :image, :category
+  attributes :id, :category, :title, :description, :author, :image
 
   def category
     object.try(:category).name

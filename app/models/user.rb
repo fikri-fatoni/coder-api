@@ -7,14 +7,16 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable,
-         :validatable, authentication_keys: %i[email username first_name phone_number programming_skill]
+         :validatable, authentication_keys: %i[email username]
   include DeviseTokenAuth::Concerns::User
+
+  mount_uploader :avatar, AvatarUploader
 
   validate :validate_username
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
 
-  validates :first_name, :phone_number, :programming_skill, presence: true
+  validates :first_name, :phone_number, :programming_skill, :avatar, presence: true
 
   enumerize :programming_skill, in: { beginner: 1, intermediate: 2, advanced: 3, professional: 4, expert: 5 }
 
