@@ -18,4 +18,4 @@ admin.phone_number = '081800008888'
 admin.programming_skill = 5
 admin.save
 
-user.add_role(:admin)
+admin.add_role 'admin'
