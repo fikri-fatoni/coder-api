@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
-  rolify
+  rolify before_add: :delete_previous_role
   extend Devise::Models
   extend Enumerize
   # Include default devise modules. Others available are:
@@ -52,5 +52,11 @@ class User < ActiveRecord::Base
 
   def assign_default_role
     add_role(:user) if roles.blank?
+  end
+
+  def delete_previous_role(assigned_role)
+    return if roles.pluck(:name).include?(assigned_role.name)
+
+    roles.delete(roles.where(id: roles.ids))
   end
 end
