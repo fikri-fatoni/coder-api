@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
 
-  validates :first_name, :phone_number, :programming_skill, :avatar, presence: true
+  validates :first_name, :phone_number, :programming_skill, presence: true
 
   enumerize :programming_skill, in: { beginner: 1, intermediate: 2, advanced: 3, professional: 4, expert: 5 }
 
