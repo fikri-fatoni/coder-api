@@ -19,7 +19,7 @@ class Api::V1::ArticlesController < ApplicationController
 
   def create
     article = Article.new(article_params)
-    article.author_id = current_user.id
+    article.author_id = params[:article][:author_id].present? ? params[:article][:author_id] : current_user.id
     if article.save
       render json: {
         success: true,

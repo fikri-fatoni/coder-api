@@ -19,7 +19,7 @@ class Api::V1::SchedulesController < ApplicationController
 
   def create
     schedule = Schedule.new(schedule_params)
-    schedule.mentor_id = current_user.id
+    schedule.mentor_id = params[:schedule][:mentor_id].present? ? params[:schedule][:mentor_id] : current_user.id
     if schedule.save
       render json: {
         success: true,

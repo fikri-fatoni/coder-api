@@ -3,7 +3,9 @@ class ArticleSerializer < ActiveModel::Serializer
 
   def image
     image = object.try(:image)
-    { thumb: { url: image.try(:url) } }
+    return if image.nil?
+
+    { url: image.try(:url) }
   end
 
   def category

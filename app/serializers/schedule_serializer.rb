@@ -3,7 +3,6 @@ class ScheduleSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :google_form_link, :schedule_type,
              :status, :learning_tool, :event_date, :count_down, :category, :mentor
 
-
   def category
     category = object.try(:category)
     {
