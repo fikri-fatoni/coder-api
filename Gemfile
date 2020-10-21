@@ -47,6 +47,8 @@ gem 'cancancan' # Authorizations
 gem 'carrierwave', '~> 2.0' # Upload file
 gem 'devise_token_auth' # Authentication
 gem 'enumerize' # Enumerator
+gem 'figaro' # access keys
+gem 'fog-aws' # Directory uploaded file
 gem 'kaminari' # Pagination
 gem 'mini_magick' # Thumbnail for image
 gem 'ransack' # Searching & Sorting

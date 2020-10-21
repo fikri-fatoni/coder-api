@@ -1,7 +1,8 @@
 class ScheduleSerializer < ActiveModel::Serializer
   include ActionView::Helpers::DateHelper
   attributes :id, :title, :description, :google_form_link, :schedule_type,
-             :status, :learning_tool, :event_date, :count_down, :category, :mentor
+             :status, :learning_tool, :event_date, :count_down, :category, :mentor,
+             :created_at, :updated_at
 
   def category
     category = object.try(:category)
@@ -35,5 +36,13 @@ class ScheduleSerializer < ActiveModel::Serializer
     return 'coming' if object.try(:event_date) > Time.zone.now
 
     'finish'
+  end
+
+  def created_at
+    object.try(:created_at).in_time_zone(Time.zone).strftime('%d-%m-%Y %T %Z')
+  end
+
+  def updated_at
+    object.try(:updated_at).in_time_zone(Time.zone).strftime('%d-%m-%Y %T %Z')
   end
 end
