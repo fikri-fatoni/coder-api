@@ -1,5 +1,6 @@
 class ArticleSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :image, :category, :author
+  attributes :id, :title, :description, :image, :category, :author,
+             :created_at, :updated_at
 
   def image
     image = object.try(:image)
@@ -24,5 +25,13 @@ class ArticleSerializer < ActiveModel::Serializer
       last_name: author.try(:last_name),
       avatar: { url: author.try(:avatar).url }
     }
+  end
+
+  def created_at
+    object.try(:created_at).in_time_zone(Time.zone).strftime('%d-%m-%Y %T %Z')
+  end
+
+  def updated_at
+    object.try(:updated_at).in_time_zone(Time.zone).strftime('%d-%m-%Y %T %Z')
   end
 end
