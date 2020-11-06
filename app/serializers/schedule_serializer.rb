@@ -22,14 +22,11 @@ class ScheduleSerializer < ActiveModel::Serializer
     }
   end
 
-  def reward
-    reward = object.try(:rewards).first
-    return if reward.nil?
+  def rewards
+    rewards = object.try(:rewards).first
+    return if rewards.nil?
 
-    ActiveModel::SerializableResource.new(
-      reward,
-      serializer: RewardSerializer
-    )
+    { id: rewards.try(:id), name: rewards.try(:name) }
   end
 
   def event_date

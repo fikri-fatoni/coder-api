@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   validates :first_name, :phone_number, :programming_skill, presence: true
 
   enumerize :programming_skill, in: { beginner: 1, intermediate: 2, advanced: 3, professional: 4, expert: 5 }
+  enumerize :user_type, in: %i[starter basic pro], default: :starter
 
   after_create :assign_default_role
 
@@ -40,6 +41,10 @@ class User < ActiveRecord::Base
 
   def mentor?
     has_role?(:mentor)
+  end
+
+  def user_pro?
+    user_type == 'pro'
   end
 
   private

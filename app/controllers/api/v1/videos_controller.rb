@@ -1,5 +1,5 @@
 class Api::V1::VideosController < ApplicationController
-  before_action :authenticate_api_user!, except: %i[index show]
+  before_action :authenticate_api_user!, except: %i[index]
   before_action :set_video, only: %i[show update destroy]
   load_and_authorize_resource
 
@@ -35,7 +35,18 @@ class Api::V1::VideosController < ApplicationController
   end
 
   def show
-    render json: @video, serializer: VideoSerializer
+    if @video.video_type == 'premium'
+      if current_user.user_pro? || current_user.admin? || current_user.mentor?
+        render json: @video, serializer: VideoSerializer
+      else
+        render json: {
+          success: false,
+          messages: 'Tidak memiliki akses'
+        }, status: 401
+      end
+    else
+      render json: @video, serializer: VideoSerializer
+    end
   end
 
   def update
@@ -77,8 +88,8 @@ class Api::V1::VideosController < ApplicationController
   def video_params
     params.require(:video)
           .permit(
-            :title, :description, :thumbnail,
-            :video_link, :category_id, :mentor_id
+            :title, :description, :thumbnail, :video_link,
+            :video_type, :category_id, :mentor_id
           )
   end
 end
