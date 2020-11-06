@@ -1,6 +1,6 @@
 class VideoSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :thumbnail, :video_link,
-             :category, :mentor, :created_at, :updated_at
+             :video_type, :category, :mentor, :created_at, :updated_at
 
   def thumbnail
     thumbnail = object.try(:thumbnail)

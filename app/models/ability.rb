@@ -13,7 +13,8 @@ class Ability
       can :read, :all
       can :manage, Article if user.author?
       can :manage, Schedule if user.mentor?
-      cannot :read, [Role, Category, User]
+      can :manage, Video if user.mentor?
+      cannot :read, [Category, Reward, Role, User]
     end
     #
     # The first argument to `can` is the action you are giving the user
