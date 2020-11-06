@@ -20,6 +20,7 @@ class Api::V1::SchedulesController < ApplicationController
   def create
     schedule = Schedule.new(schedule_params)
     schedule.mentor_id = params[:schedule][:mentor_id].present? ? params[:schedule][:mentor_id] : current_user.id
+    schedule.add_reward(params[:schedule][:reward_id]) if params[:schedule][:reward_id].present?
     if schedule.save
       render json: {
         success: true,
@@ -39,6 +40,8 @@ class Api::V1::SchedulesController < ApplicationController
   end
 
   def update
+    @schedule.add_reward(params[:schedule][:reward_id]) if params[:schedule][:reward_id].present?
+    @schedule.remove_reward(params[:schedule][:remove_reward_id]) if params[:schedule][:remove_reward_id].present?
     if @schedule.update(schedule_params)
       render json: {
         success: true,

@@ -1,8 +1,8 @@
 class ScheduleSerializer < ActiveModel::Serializer
   include ActionView::Helpers::DateHelper
   attributes :id, :title, :description, :google_form_link, :schedule_type,
-             :status, :learning_tool, :event_date, :count_down, :category, :mentor,
-             :created_at, :updated_at
+             :status, :learning_tool, :event_date, :count_down, :category,
+             :mentor, :rewards, :created_at, :updated_at
 
   def category
     category = object.try(:category)
@@ -20,6 +20,16 @@ class ScheduleSerializer < ActiveModel::Serializer
       last_name: mentor.try(:last_name),
       avatar: { url: mentor.try(:avatar).url }
     }
+  end
+
+  def reward
+    reward = object.try(:rewards).first
+    return if reward.nil?
+
+    ActiveModel::SerializableResource.new(
+      reward,
+      serializer: RewardSerializer
+    )
   end
 
   def event_date
