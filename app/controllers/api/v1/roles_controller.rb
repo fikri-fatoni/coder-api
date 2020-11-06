@@ -74,7 +74,7 @@ class Api::V1::RolesController < ApplicationController
       render json: {
         success: false,
         messages: 'Gagal menambahkan role',
-        error: @role.errors.full_messages
+        error: user.errors.full_messages
       }
     end
   end

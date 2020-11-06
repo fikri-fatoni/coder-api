@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_15_103430) do
+ActiveRecord::Schema.define(version: 2020_11_06_090150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,20 @@ ActiveRecord::Schema.define(version: 2020_10_15_103430) do
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "rewards", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "rewards_schedules", id: false, force: :cascade do |t|
+    t.bigint "reward_id"
+    t.bigint "schedule_id"
+    t.index ["reward_id"], name: "index_rewards_schedules_on_reward_id"
+    t.index ["schedule_id"], name: "index_rewards_schedules_on_schedule_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -84,6 +98,7 @@ ActiveRecord::Schema.define(version: 2020_10_15_103430) do
     t.string "programming_skill"
     t.date "date_of_birth"
     t.string "username"
+    t.string "profession"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -97,6 +112,17 @@ ActiveRecord::Schema.define(version: 2020_10_15_103430) do
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
+  create_table "videos", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "thumbnail"
+    t.string "video_link"
+    t.integer "mentor_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "category_id"
   end
 
 end
