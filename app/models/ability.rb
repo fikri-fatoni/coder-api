@@ -11,6 +11,8 @@ class Ability
       can :manage, :all
     else
       can :read, :all
+      can :manage, Forum
+      can :manage, Comment
       can :manage, Article if user.author?
       can :manage, Schedule if user.mentor?
       can :manage, Video if user.mentor?

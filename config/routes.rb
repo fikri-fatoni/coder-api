@@ -14,6 +14,10 @@ Rails.application.routes.draw do
       resources :users, only: [:index]
       resources :videos
 
+      resources :forums do
+        resources :comments
+      end
+
       resources :roles do
         post 'assign_role', on: :collection
       end
