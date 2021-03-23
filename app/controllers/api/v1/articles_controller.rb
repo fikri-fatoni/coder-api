@@ -1,20 +1,23 @@
-class Api::V1::ArticlesController < ApplicationController
+class Api::V1::ArticlesController < BaseController
   before_action :authenticate_api_user!, except: %i[index show]
   before_action :set_article, only: %i[show update destroy]
   load_and_authorize_resource
 
   def index
     search = Article.ransack(params[:q])
+    search.sorts = "#{@sort} #{@order}" unless @sort.nil? || @order.nil?
     search.sorts = 'id asc' if search.sorts.empty?
     result = search.result(distinct: true)
     article = result.page(params[:page]).per(params[:per])
+    article = article[@start..@end] unless @start.nil? || @end.nil?
 
     article_serializer = ActiveModel::Serializer::CollectionSerializer.new(
       article,
       serializer: ArticleSerializer
     )
 
-    render json: { count: result.count, data: article_serializer }
+    total_count_header(result.count)
+    render json: article_serializer
   end
 
   def create
